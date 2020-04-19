@@ -77,7 +77,7 @@
 	--  1. LEFT JOIN двух таблиц и WHERE по одному из атрибутов
 	SELECT * FROM recipient LEFT JOIN adress ON recipient.id_recipient = adress.id_recipient WHERE recipient.name = 'Cemen';
 	--  2. RIGHT JOIN. Получить такую же выборку, как и в 5.1
-	SELECT TOP 5 * FROM recipient LEFT JOIN adress ON recipient.id_recipient = adress.id_recipient ORDER BY recipient.surname ASC;
+	SELECT TOP 5 * FROM recipient RIGHT JOIN adress ON recipient.id_recipient = adress.id_recipient ORDER BY recipient.surname ASC;
     --  3. LEFT JOIN трех таблиц + WHERE по атрибуту из каждой таблицы
 	SELECT adress.id_recipient, adress.id_adress, adress.name,
 		   letter.id_adress, letter.arrival_date, letter.return_date,
