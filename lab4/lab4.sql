@@ -41,7 +41,7 @@ WHERE NOT EXISTS (
 	room.id_room = room_in_booking.id_room);
 
 
--- 4. ƒать количество проживающих в гостинице " осмос" на 23 марта по каждой категории номеров	
+-- 4. ƒать количество проживающих в гостинице " осмос" на 23 марта по каждой категории номеров
 SELECT COUNT(client.id_client) AS amount, room_category.name FROM client
 INNER JOIN booking ON client.id_client = booking.id_client
 INNER JOIN room_in_booking ON booking.id_booking = room_in_booking.id_booking
@@ -53,8 +53,8 @@ WHERE
 	room_in_booking.checkin_date <= '2019-03-23' AND '2019-03-23' <= room_in_booking.checkout_date
 GROUP BY room_category.name
 
---5. ƒать список последних проживавших клиентов по всем комнатам гостиницы
---У осмосФ, выехавшим в апреле с указанием даты выезда. 
+--5. ƒать список последних проживавших клиентов по всем комнатам гостиницы У осмосФ, 
+--   выехавшиx в апреле с указанием даты выезда.
 
 SELECT client.name, room_in_booking.checkout_date, room.id_room  FROM client
 INNER JOIN booking ON client.id_client = booking.id_client
