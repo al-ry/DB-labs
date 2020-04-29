@@ -30,11 +30,6 @@ WHERE
 
 --3. Дать список свободных номеров всех гостиниц на 22 апреля.
 SELECT * FROM room
-WHERE id_room NOT IN (
-	SELECT id_room FROM room_in_booking
-	WHERE room_in_booking.checkin_date <= '2019-04-22' AND '2019-04-22' <= room_in_booking.checkout_date);
-
-SELECT * FROM room
 WHERE NOT EXISTS (
 	SELECT * FROM room_in_booking
 	WHERE (room_in_booking.checkin_date <= '2019-04-22' AND '2019-04-22' <= room_in_booking.checkout_date) AND
@@ -67,21 +62,68 @@ WHERE
 	room_in_booking.checkout_date >= '2019-04-01' AND '2019-05-01' > room_in_booking.checkout_date
 
 --6. Продлить на 2 дня дату проживания в гостинице “Космос” всем клиентам
---комнат категории “Бизнес”, которые заселились 10 мая.UPDATE room_in_bookingSET checkout_date = DATEADD(day, 2, checkout_date)FROM room INNER JOIN room_in_booking ON room_in_booking.id_room = room.id_roomINNER JOIN hotel ON hotel.id_hotel = room.id_hotelINNER JOIN room_category ON room_category.id_room_category = room.id_room_categoryWHERE 	hotel.name = N'Космос' AND room_category.name = N'Бизнес' AND	room_in_booking.checkin_date = '2019-03-10';--7. Найти все "пересекающиеся" варианты проживания.SELECT * FROM room_in_booking AS col1INNER JOIN room_in_booking AS col2 ON col1.id_room = col2.id_roomWHERE 	col1.checkin_date <= col2.checkin_date AND col1.checkout_date > col2.checkout_date--9. Добавить необходимые индексы для всех таблиц.BEGIN TRANSACTION INSERT INTO booking VALUES(1,'2020-04-25')COMMIT;--9. Добавить необходимые индексы для всех таблиц.CREATE UNIQUE NONCLUSTERED INDEX [UI_client_phone] ON client(	phone ASC)
+--комнат категории “Бизнес”, которые заселились 10 мая.
+
+UPDATE room_in_booking
+SET checkout_date = DATEADD(day, 2, checkout_date)
+FROM room 
+INNER JOIN room_in_booking ON room_in_booking.id_room = room.id_room
+INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
+INNER JOIN room_category ON room_category.id_room_category = room.id_room_category
+WHERE 
+	hotel.name = N'Космос' AND room_category.name = N'Бизнес' AND
+	room_in_booking.checkin_date = '2019-03-10';
+
+--7. Найти все "пересекающиеся" варианты проживания.
+
+SELECT * FROM room_in_booking AS col1
+INNER JOIN room_in_booking AS col2 ON col1.id_room = col2.id_room
+WHERE 
+	col1.checkin_date <= col2.checkin_date AND col1.checkout_date > col2.checkout_date
+
+--9. Добавить необходимые индексы для всех таблиц.
+BEGIN TRANSACTION 
+INSERT INTO booking VALUES(1,'2020-04-25')
+COMMIT;
+
+
+--9. Добавить необходимые индексы для всех таблиц.
+CREATE UNIQUE NONCLUSTERED INDEX [UI_client_phone] ON client
+(
+	phone ASC
+)
+
 CREATE NONCLUSTERED INDEX [IX_room_id_room_category] ON room
 (
 	id_hotel ASC,
 	id_room_category ASC
-)CREATE NONCLUSTERED INDEX [IX_room_id_dooking-id_category] ON room_in_booking
+)
+
+CREATE NONCLUSTERED INDEX [IX_room_id_dooking-id_category] ON room_in_booking
 (
 	id_room ASC,
 	id_booking ASC
-)CREATE NONCLUSTERED INDEX [IX_room_checkin_date-checkout_date] ON room_in_booking
+)
+
+CREATE NONCLUSTERED INDEX [IX_room_checkin_date-checkout_date] ON room_in_booking
 (
 	checkin_date ASC,
 	checkout_date ASC
-)CREATE NONCLUSTERED INDEX [IX_booking_id_client] ON booking
+)
+
+CREATE NONCLUSTERED INDEX [IX_booking_id_client] ON booking
 (
 	id_client ASC
-)CREATE NONCLUSTERED INDEX [IX_hotel_name] ON hotel(	name ASC)CREATE NONCLUSTERED INDEX [IX_hotel_name] ON room_category(	name ASC)
+)
+
+CREATE NONCLUSTERED INDEX [IX_hotel_name] ON hotel
+(
+	name ASC
+)
+
+CREATE NONCLUSTERED INDEX [IX_hotel_name] ON room_category
+(
+	name ASC
+)
+
 
