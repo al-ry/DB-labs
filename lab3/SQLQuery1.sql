@@ -1,13 +1,28 @@
+USE notifications
 -- 1. INSERT
+	SELECT * FROM recipient;
+	SELECT * FROM post;
+	SELECT * FROM letter;
+	SELECT * FROM adress;
+	SELECT * FROM notification;
 	--  1. Без указания списка полей
 	INSERT INTO recipient VALUES ('Ivan', 'Ivanov', '89023235688', '1488 166679');
 	INSERT INTO recipient VALUES ('Alexey', 'Pertov', '89065532337', '0833 169943');
+	INSERT INTO recipient VALUES ('Victor', 'Sidorov', '89065532337', '2281 128988');
 	INSERT INTO post VALUES ('424000', '56-67-65', '08:00:00', '21:00:00', 'Pavlenko 3');
+	INSERT INTO adress VALUES ('424000', '56-67-65', '08:00:00', '21:00:00', 'Pavlenko 3');
+	INSERT INTO letter VALUES ('8', '2020-04-25 10:28:00', '2020-05-20 05:24:00');
+	INSERT INTO letter VALUES ('9', '2020-04-27 06:50:00', '2020-05-20 05:24:00');
+	INSERT INTO letter VALUES ('10', '2020-04-27 15:39:00', '2020-05-20 05:24:00');
+	INSERT INTO letter VALUES ('10', '2014-04-27 15:39:00', '2024-06-20 05:24:00');
+	INSERT INTO letter VALUES ('8', '2016-04-27 15:39:00', '2016-06-20 05:24:00');
+	INSERT INTO notification VALUES ('21', 'tax', 'heat', '2000');
+	INSERT INTO notification VALUES ('22', 'tax', 'electricity', '500');
+	INSERT INTO notification VALUES ('23', 'tax', 'water', '300');
+	INSERT INTO notification VALUES ('24', 'mother', 'hello', '0');
 	--2. С указанием списка полей
 	INSERT INTO post(post_index, phone_number, work_schedule_start, work_schedule_end, adress_name)
 	VALUES ('424158', '45-45-66', '08:00:00', '21:00:00', 'Pushkina 10');
-	--  3. С чтением значения из другой таблицы
-	INSERT INTO letter (id_adress) SELECT (id_adress) FROM adress;
 
 -- 2. DELETE
 	--  1. Всех записей
@@ -32,7 +47,7 @@
 	--	2. Со всеми атрибутами (SELECT * FROM...)
 	SELECT * FROM recipient;
 	--	3. С условием по атрибуту (SELECT * FROM ... WHERE atr1 = "")
-	select * FROM notification WHERE id_letter = 5;
+	select * FROM notification WHERE id_letter = 22;
 
 -- 5. SELECT ORDER BY + TOP (LIMIT)
 	--  1. С сортировкой по возрастанию ASC + ограничение вывода количества записей
@@ -46,7 +61,7 @@
 
 -- 6. Работа с датами. Необходимо, чтобы одна из таблиц содержала атрибут с типом DATETIME.
 	--  1. WHERE по дате
-	SELECT * FROM letter WHERE arrival_date = '2020-04-20 05:24:00';
+	SELECT * FROM letter WHERE arrival_date = '2020-04-25 10:28:00';
 	--  2. Извлечь из таблицы не всю дату, а только год. Например, год рождения автора.
 	SELECT id_adress, YEAR(return_date) AS date FROM letter;
 
@@ -75,7 +90,7 @@
 
 -- 9. SELECT JOIN
 	--  1. LEFT JOIN двух таблиц и WHERE по одному из атрибутов
-	SELECT * FROM recipient LEFT JOIN adress ON recipient.id_recipient = adress.id_recipient WHERE recipient.name = 'Cemen';
+	SELECT * FROM recipient LEFT JOIN adress ON recipient.id_recipient = adress.id_recipient WHERE recipient.name = 'Victor';
 	--  2. RIGHT JOIN. Получить такую же выборку, как и в 5.1
 	SELECT TOP 5 * FROM recipient RIGHT JOIN adress ON recipient.id_recipient = adress.id_recipient ORDER BY recipient.surname ASC;
     --  3. LEFT JOIN трех таблиц + WHERE по атрибуту из каждой таблицы
@@ -84,13 +99,15 @@
 		   notification.id_letter, notification.reason, notification.cost
     FROM adress LEFT JOIN letter ON adress.id_adress = letter.id_adress
 	LEFT JOIN notification ON letter.id_letter = notification.id_letter
-	WHERE adress.id_adress = 8 AND reason = 'tax payments' AND arrival_date = '2020-04-20 05:24:00.000';
+	WHERE adress.id_adress = 8 AND reason = 'tax' AND YEAR(arrival_date) = '2020';
     --  4. FULL OUTER JOIN двух таблиц
 	SELECT * FROM post FULL OUTER JOIN recipient ON post.id_post = recipient.id_recipient;
 
 -- 10. Подзапросы
 	--  1. Написать запрос с WHERE IN (подзапрос)
-	SELECT * FROM letter WHERE id_adress IN (8, 9);
+	SELECT * FROM letter WHERE id_letter IN (
+		SELECT id_letter FROM notification
+		WHERE reason = 'tax')
 	--  2. Написать запрос SELECT atr1, atr2, (подзапрос) FROM ...    
 	SELECT id_post, 
 		   post_index, 
