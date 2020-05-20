@@ -1,7 +1,7 @@
-USE notificationsV2;
+ï»¿
 
 -- 1. INSERT
-	--1. Áåç óêàçàíèÿ ñïèñêà ïîëåé
+	--1.Ð‘ÐµÐ· ÑƒÐºÐ°Ð·Ð°Ð½Ð¸Ñ ÑÐ¿Ð¸ÑÐºÐ° Ð¿Ð¾Ð»ÐµÐ¹
 	INSERT INTO recipient VALUES ('Ivan', 'Ivanov', '89023235688', '1488 166679');
 	INSERT INTO recipient VALUES ('Alexey', 'Pertov', '89065532337', '0833 169943');
 	INSERT INTO recipient VALUES ('Victor', 'Sidorov', '89065532337', '2281 128988');
@@ -9,7 +9,7 @@ USE notificationsV2;
 	INSERT INTO post VALUES ('424000', '56-67-65', '08:00:00', '21:00:00', 'Pavlenko 3');
 	INSERT INTO adress VALUES ('Pavlenko 4', '1', '5');
 	INSERT INTO letter VALUES ('2020-04-25 10:28:00', '2020-05-20 05:24:00', 5, 5);
-	--2. Ñ óêàçàíèåì ñïèñêà ïîëåé
+	--2. Ð¡ ÑƒÐºÐ°Ð·Ð°Ð½Ð¸ÐµÐ¼ ÑÐ¿Ð¸ÑÐºÐ° Ð¿Ð¾Ð»ÐµÐ¹
 	INSERT INTO notification (title, action, content) VALUES ('Ivite', 'wedding', 'We would like you to come to the wedding');
 	INSERT INTO notification (title, action, content) VALUES ('Notification', 'Appearance to court', 'You must come to the court');
 	INSERT INTO notification (title, action, content, cost) VALUES ('JKX', 'Payment', 'Payment for heating should be paid on time', '2200');
@@ -17,45 +17,45 @@ USE notificationsV2;
 
 
 --2. DELETE
-	--1. Âñåõ çàïèñåé
+	--1. Ð’ÑÐµÑ… Ð·Ð°Ð¿Ð¸ÑÐµÐ¹
 	DELETE notification;
-	--2. Ïî óñëîâèþ
+	--2. ÐŸÐ¾ ÑƒÑÐ»Ð¾Ð²Ð¸ÑŽ
 	DELETE FROM recipient WHERE name = 'Ivan';
 
 
 --3. UPDATE
-	--1. Âñåõ çàïèñåé
+	--1. Ð’ÑÐµÑ… Ð·Ð°Ð¿Ð¸ÑÐµÐ¹
 	UPDATE recipient SET phone_number = '88005553535';
-	--2. Ïî óñëîâèþ
+	--2. ÐŸÐ¾ ÑƒÑÐ»Ð¾Ð²Ð¸ÑŽ Ð¾Ð±Ð½Ð¾Ð²Ð»ÑÑ Ð¾Ð´Ð¸Ð½ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚
 	UPDATE post SET closing_time = '20:00:00' WHERE closing_time = '21:00:00';
-	--3. Ïî óñëîâèþ îáíîâëÿÿ íåñêîëüêî àòðèáóòîâ
+	--3. ÐŸÐ¾ ÑƒÑÐ»Ð¾Ð²Ð¸ÑŽ Ð¾Ð±Ð½Ð¾Ð²Ð»ÑÑ Ð½ÐµÑÐºÐ¾Ð»ÑŒÐºÐ¾ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ð¾Ð²
 	UPDATE recipient SET name = 'Georg', passport = '1356 443877' WHERE passport = '2281 128988';
 
 --4. SELECT
-	--1. Ñ îïðåäåëåííûì íàáîðîì èçâëåêàåìûõ àòðèáóòîâ (SELECT atr1, atr2 FROM...)
+	--1. Ð¡ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð½Ñ‹Ð¼ Ð½Ð°Ð±Ð¾Ñ€Ð¾Ð¼ Ð¸Ð·Ð²Ð»ÐµÐºÐ°ÐµÐ¼Ñ‹Ñ… Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ð¾Ð² (SELECT atr1, atr2 FROM...)
 	 SELECT post_index, adress_name FROM post;
-	--2. Ñî âñåìè àòðèáóòàìè (SELECT * FROM...)
+	--2. Ð¡Ð¾ Ð²ÑÐµÐ¼Ð¸ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ð°Ð¼Ð¸ (SELECT * FROM...)
 	SELECT * FROM recipient;
-	--3. Ñ óñëîâèåì ïî àòðèáóòó (SELECT * FROM ... WHERE atr1 = "")
+	--3. Ð¡ ÑƒÑÐ»Ð¾Ð²Ð¸ÐµÐ¼ Ð¿Ð¾ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ñƒ (SELECT * FROM ... WHERE atr1 = "")
 	SELECT * FROM notification WHERE title = 'JKX';
 
 -- 5. SELECT ORDER BY + TOP (LIMIT)
-	--1. Ñ ñîðòèðîâêîé ïî âîçðàñòàíèþ ASC + îãðàíè÷åíèå âûâîäà êîëè÷åñòâà çàïèñåé
+	--1. Ð¡ ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ¾Ð¹ Ð¿Ð¾ Ð²Ð¾Ð·Ñ€Ð°ÑÑ‚Ð°Ð½Ð¸ÑŽ ASC + Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ðµ Ð²Ñ‹Ð²Ð¾Ð´Ð° ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð° Ð·Ð°Ð¿Ð¸ÑÐµÐ¹
 	SELECT TOP 5 * FROM recipient ORDER BY recipient.surname ASC
-	-- 2. Ñ ñîðòèðîâêîé ïî óáûâàíèþ DESC
+	-- 2. Ð¡ ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ¾Ð¹ Ð¿Ð¾ ÑƒÐ±Ñ‹Ð²Ð°Ð½Ð¸ÑŽ DESC
 	SELECT TOP 10 * FROM recipient ORDER BY name DESC;
-	--3. Ñ ñîðòèðîâêîé ïî äâóì àòðèáóòàì + îãðàíè÷åíèå âûâîäà êîëè÷åñòâà çàïèñåé
+	--3. Ð¡ ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ¾Ð¹ Ð¿Ð¾ Ð´Ð²ÑƒÐ¼ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ð°Ð¼ + Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ðµ Ð²Ñ‹Ð²Ð¾Ð´Ð° ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð° Ð·Ð°Ð¿Ð¸ÑÐµÐ¹
 	SELECT TOP 3 * FROM post ORDER BY post_index, adress_name DESC;
-	--4. Ñ ñîðòèðîâêîé ïî ïåðâîìó àòðèáóòó, èç ñïèñêà èçâëåêàåìûõ
+	--4. Ð¡ ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ¾Ð¹ Ð¿Ð¾ Ð¿ÐµÑ€Ð²Ð¾Ð¼Ñƒ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ñƒ, Ð¸Ð· ÑÐ¿Ð¸ÑÐºÐ° Ð¸Ð·Ð²Ð»ÐµÐºÐ°ÐµÐ¼Ñ‹Ñ…
 	SELECT TOP 2 * FROM adress ORDER BY name;
 
--- 6. Ðàáîòà ñ äàòàìè. Íåîáõîäèìî, ÷òîáû îäíà èç òàáëèö ñîäåðæàëà àòðèáóò ñ òèïîì DATETIME.
-	--  1. WHERE ïî äàòå
+-- 6. Ð Ð°Ð±Ð¾Ñ‚Ð° Ñ Ð´Ð°Ñ‚Ð°Ð¼Ð¸. ÐÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¾Ð´Ð½Ð° Ð¸Ð· Ñ‚Ð°Ð±Ð»Ð¸Ñ† ÑÐ¾Ð´ÐµÑ€Ð¶Ð°Ð»Ð° Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚ Ñ Ñ‚Ð¸Ð¿Ð¾Ð¼ DATETIME.
+	--1. WHERE Ð¿Ð¾ Ð´Ð°Ñ‚Ðµ
 	SELECT * FROM letter WHERE arrival_date = '2020-04-25 10:28:00';
-	--  2. Èçâëå÷ü èç òàáëèöû íå âñþ äàòó, à òîëüêî ãîä. Íàïðèìåð, ãîä ðîæäåíèÿ àâòîðà.
+	--  2.  Ð˜Ð·Ð²Ð»ÐµÑ‡ÑŒ Ð¸Ð· Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ Ð½Ðµ Ð²ÑÑŽ Ð´Ð°Ñ‚Ñƒ, Ð° Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð³Ð¾Ð´.
 	SELECT id_adress, YEAR(return_date) AS date FROM letter;
 
--- 7. SELECT GROUP BY ñ ôóíêöèÿìè àãðåãàöèè
+-- 7. SELECT GROUP BY Ñ Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑÐ¼Ð¸ Ð°Ð³Ñ€ÐµÐ³Ð°Ñ†Ð¸Ð¸
 	--  1. MIN
 	SELECT title, MIN(cost) AS min_cost FROM notification GROUP BY title;
 	--  2. MAX
@@ -68,7 +68,7 @@ USE notificationsV2;
 	SELECT COUNT(id_adress) AS letters_count_for_each_user FROM letter GROUP BY id_adress;
 
 -- 8. SELECT GROUP BY + HAVING
-	--  1. Íàïèñàòü 3 ðàçíûõ çàïðîñà ñ èñïîëüçîâàíèåì GROUP BY + HAVING
+	--  1. ÐÐ°Ð¿Ð¸ÑÐ°Ñ‚ÑŒ 3 Ñ€Ð°Ð·Ð½Ñ‹Ñ… Ð·Ð°Ð¿Ñ€Ð¾ÑÐ° Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸ÐµÐ¼ GROUP BY + HAVING
 	SELECT arrival_date FROM letter GROUP BY arrival_date HAVING YEAR(arrival_date)  > 2016;
 
 	SELECT title, cost FROM notification GROUP BY title, cost HAVING sum(cost) > 200;
@@ -77,27 +77,27 @@ USE notificationsV2;
 	HAVING MIN(DATEPART(hour, closing_time)) < 21;
 
 -- 9. SELECT JOIN
-	--  1. LEFT JOIN äâóõ òàáëèö è WHERE ïî îäíîìó èç àòðèáóòîâ
+	--  1. LEFT JOIN Ð´Ð²ÑƒÑ… Ñ‚Ð°Ð±Ð»Ð¸Ñ† Ð¸ WHERE Ð¿Ð¾ Ð¾Ð´Ð½Ð¾Ð¼Ñƒ Ð¸Ð· Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ð¾Ð²
 	SELECT * FROM recipient LEFT JOIN adress ON recipient.id_recipient = adress.id_recipient WHERE recipient.id_recipient = '5';
-	-- 2. RIGHT JOIN. Ïîëó÷èòü òàêóþ æå âûáîðêó, êàê è â 9.1
+	-- 2. RIGHT JOIN. ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ñ‚Ð°ÐºÑƒÑŽ Ð¶Ðµ Ð²Ñ‹Ð±Ð¾Ñ€ÐºÑƒ, ÐºÐ°Ðº Ð¸ Ð² 9.1
 	SELECT * FROM recipient RIGHT JOIN adress ON adress.id_recipient = recipient.id_recipient  WHERE recipient.id_recipient = '5';
-	--  3. LEFT JOIN òðåõ òàáëèö + WHERE ïî àòðèáóòó èç êàæäîé òàáëèöû
+	--  3. LEFT JOIN Ñ‚Ñ€ÐµÑ… Ñ‚Ð°Ð±Ð»Ð¸Ñ† + WHERE Ð¿Ð¾ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ñƒ Ð¸Ð· ÐºÐ°Ð¶Ð´Ð¾Ð¹ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹
 	SELECT adress.id_recipient, adress.id_adress, adress.name,
 		   letter.id_adress, letter.arrival_date, letter.return_date,
 		   notification.title, notification.content
     FROM adress LEFT JOIN letter ON adress.id_adress = letter.id_adress
 	LEFT JOIN notification ON letter.id_notification = notification.id_notification
 	WHERE adress.id_adress = 5 AND notification.title = 'Ivite' AND YEAR(arrival_date) = '2020';
-	 --  4. FULL OUTER JOIN äâóõ òàáëèö
+	 --  4. FULL OUTER JOIN Ð´Ð²ÑƒÑ… Ñ‚Ð°Ð±Ð»Ð¸Ñ†
 	SELECT * FROM adress FULL OUTER JOIN post ON adress.id_post = post.id_post;
 
 
--- 10. Ïîäçàïðîñû
-	--  1. Íàïèñàòü çàïðîñ ñ WHERE IN (ïîäçàïðîñ)
+-- 10. ÐŸÐ¾Ð´Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹
+	--  1. ÐÐ°Ð¿Ð¸ÑÐ°Ñ‚ÑŒ Ð·Ð°Ð¿Ñ€Ð¾Ñ Ñ WHERE IN (Ð¿Ð¾Ð´Ð·Ð°Ð¿Ñ€Ð¾Ñ)
 	SELECT * FROM letter WHERE id_letter IN (
 		SELECT id_letter FROM notification
 		WHERE title = 'JKX')
-	--  2. Íàïèñàòü çàïðîñ SELECT atr1, atr2, (ïîäçàïðîñ) FROM ...    
+	--  2. ÐÐ°Ð¿Ð¸ÑÐ°Ñ‚ÑŒ Ð·Ð°Ð¿Ñ€Ð¾Ñ SELECT atr1, atr2, (Ð¿Ð¾Ð´Ð·Ð°Ð¿Ñ€Ð¾Ñ) FROM ...   
 	SELECT id_post, 
 		   post_index, 
 		  (SELECT name FROM adress WHERE post.id_post = adress.id_post) AS adress_relation
