@@ -37,16 +37,14 @@ WHERE NOT EXISTS (
 
 
 -- 4. Дать количество проживающих в гостинице "Космос" на 23 марта по каждой категории номеров
-SELECT COUNT(client.id_client) AS amount, room_category.name FROM client
-INNER JOIN booking ON client.id_client = booking.id_client
-INNER JOIN room_in_booking ON booking.id_booking = room_in_booking.id_booking
-INNER JOIN room ON room.id_room = room_in_booking.id_room
+SELECT COUNT(room_category.id_room_category) AS is_living_amount, room_category.name FROM room_category
+INNER JOIN room ON room.id_room_category = room_category.id_room_category
 INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
-INNER JOIN room_category ON room_category.id_room_category = room.id_room_category
+INNER JOIN room_in_booking ON room.id_room = room_in_booking.id_room
 WHERE 
 	hotel.name = N'Космос' AND
 	room_in_booking.checkin_date <= '2019-03-23' AND '2019-03-23' <= room_in_booking.checkout_date
-GROUP BY room_category.name
+GROUP BY room_category.name;
 
 --5. Дать список последних проживавших клиентов по всем комнатам гостиницы “Космос”, 
 --   выехавшиx в апреле с указанием даты выезда.
@@ -59,7 +57,7 @@ INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
 INNER JOIN room_category ON room_category.id_room_category = room.id_room_category
 WHERE 
 	hotel.name = N'Космос' AND
-	room_in_booking.checkout_date >= '2019-04-01' AND '2019-05-01' > room_in_booking.checkout_date
+	room_in_booking.checkout_date >= '2019-04-01' AND '2019-05-01' > room_in_booking.checkout_date;
 
 --6. Продлить на 2 дня дату проживания в гостинице “Космос” всем клиентам
 --комнат категории “Бизнес”, которые заселились 10 мая.
@@ -78,12 +76,21 @@ WHERE
 
 SELECT * FROM room_in_booking AS col1
 INNER JOIN room_in_booking AS col2 ON col1.id_room = col2.id_room
-WHERE 
-	col1.checkin_date <= col2.checkin_date AND col1.checkout_date > col2.checkout_date
+WHERE (
+	(col1.id_room_in_booking != col2.id_room_in_booking) AND
+	(col1.checkin_date <= col2.checkin_date AND col1.checkout_date > col2.checkin_date))
 
---9. Добавить необходимые индексы для всех таблиц.
+
+--8. Создать бронирование в транзакции
 BEGIN TRANSACTION 
-INSERT INTO booking VALUES(1,'2020-04-25')
+
+INSERT INTO client VALUES('Ivanov Ivan Ivanovich', '7(902)227-13-22');
+
+INSERT INTO booking VALUES(
+	(SELECT id_client FROM client WHERE name = 'Ivanov Ivan Ivanovich' AND phone = '7(902)227-13-22'), '2020-04-25');
+
+INSERT INTO room_in_booking (id_booking, id_room, checkin_date, checkout_date)  VALUES (
+	(SELECT MAX(booking.id_booking) FROM booking), 26, '2020-05-01','2020-05-12');
 COMMIT;
 
 
@@ -125,5 +132,10 @@ CREATE NONCLUSTERED INDEX [IX_hotel_name] ON room_category
 (
 	name ASC
 )
+CREATE NONCLUSTERED INDEX [IX_room_in_booking_id-booking] ON room_in_booking
+(
+	id_booking ASC
+)
+
 
 
