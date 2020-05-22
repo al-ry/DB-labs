@@ -106,7 +106,7 @@ CREATE NONCLUSTERED INDEX [IX_room_id_room_category] ON room
 	id_room_category ASC
 )
 
-CREATE NONCLUSTERED INDEX [IX_room_id_dooking-id_category] ON room_in_booking
+CREATE NONCLUSTERED INDEX [IX_room_id_dooking_id_booking-id_room] ON room_in_booking
 (
 	id_room ASC,
 	id_booking ASC
@@ -132,7 +132,7 @@ CREATE NONCLUSTERED INDEX [IX_hotel_name] ON room_category
 (
 	name ASC
 )
-CREATE NONCLUSTERED INDEX [IX_room_in_booking_id-booking] ON room_in_booking
+CREATE NONCLUSTERED INDEX [IX_room_in_booking_id_booking] ON room_in_booking
 (
 	id_booking ASC
 )
