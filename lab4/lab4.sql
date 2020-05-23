@@ -95,7 +95,7 @@ COMMIT;
 
 
 --9. Добавить необходимые индексы для всех таблиц.
-CREATE UNIQUE NONCLUSTERED INDEX [UI_client_phone] ON client
+CREATE UNIQUE NONCLUSTERED INDEX [IU_client_phone] ON client
 (
 	phone ASC
 )
