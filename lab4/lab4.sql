@@ -1,3 +1,5 @@
+USE hotels
+
 -- 1. Добавить внешние ключи.
 ALTER TABLE room 
 ADD FOREIGN KEY (id_hotel) REFERENCES hotel (id_hotel);
@@ -49,18 +51,20 @@ GROUP BY room_category.name;
 --5. Дать список последних проживавших клиентов по всем комнатам гостиницы “Космос”, 
 --   выехавшиx в апреле с указанием даты выезда.
 
-SELECT client.name, room_in_booking.checkout_date, room.id_room  FROM client
+SELECT client.name, room_in_booking.checkout_date, room.id_room FROM client
 INNER JOIN booking ON client.id_client = booking.id_client
 INNER JOIN room_in_booking ON booking.id_booking = room_in_booking.id_booking
 INNER JOIN room ON room.id_room = room_in_booking.id_room
 INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
-INNER JOIN room_category ON room_category.id_room_category = room.id_room_category
+INNER JOIN (SELECT room_in_booking.id_room, MAX(room_in_booking.checkout_date) AS last_checkout
+	FROM (SELECT * FROM room_in_booking WHERE checkout_date >='2019-04-01' AND checkout_date < '2019-05-01') AS room_in_booking
+	GROUP BY room_in_booking.id_room) AS room_in_booking2 ON room_in_booking2.id_room = room_in_booking.id_room			
 WHERE 
-	hotel.name = N'Космос' AND
-	room_in_booking.checkout_date >= '2019-04-01' AND '2019-05-01' > room_in_booking.checkout_date;
+	(hotel.name = N'Космос') AND  room_in_booking2.last_checkout = room_in_booking.checkout_date
 
 --6. Продлить на 2 дня дату проживания в гостинице “Космос” всем клиентам
 --комнат категории “Бизнес”, которые заселились 10 мая.
+BEGIN TRANSACTION
 
 UPDATE room_in_booking
 SET checkout_date = DATEADD(day, 2, checkout_date)
@@ -72,6 +76,7 @@ WHERE
 	hotel.name = N'Космос' AND room_category.name = N'Бизнес' AND
 	room_in_booking.checkin_date = '2019-03-10';
 
+ROLLBACK
 --7. Найти все "пересекающиеся" варианты проживания.
 
 SELECT * FROM room_in_booking AS col1
@@ -79,7 +84,6 @@ INNER JOIN room_in_booking AS col2 ON col1.id_room = col2.id_room
 WHERE (
 	(col1.id_room_in_booking != col2.id_room_in_booking) AND
 	(col1.checkin_date <= col2.checkin_date AND col1.checkout_date > col2.checkin_date))
-
 
 --8. Создать бронирование в транзакции
 BEGIN TRANSACTION 
