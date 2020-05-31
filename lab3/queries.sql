@@ -1,4 +1,4 @@
-﻿
+﻿USE notificationsV2;
 
 -- 1. INSERT
 	--1.Без указания списка полей
@@ -80,7 +80,7 @@
 	--  1. LEFT JOIN двух таблиц и WHERE по одному из атрибутов
 	SELECT * FROM recipient LEFT JOIN adress ON recipient.id_recipient = adress.id_recipient WHERE recipient.id_recipient = '5';
 	-- 2. RIGHT JOIN. Получить такую же выборку, как и в 9.1
-	SELECT * FROM recipient RIGHT JOIN adress ON adress.id_recipient = recipient.id_recipient  WHERE recipient.id_recipient = '5';
+	SELECT * FROM adress RIGHT JOIN recipient ON adress.id_recipient = recipient.id_recipient  WHERE recipient.id_recipient = '5';
 	--  3. LEFT JOIN трех таблиц + WHERE по атрибуту из каждой таблицы
 	SELECT adress.id_recipient, adress.id_adress, adress.name,
 		   letter.id_adress, letter.arrival_date, letter.return_date,

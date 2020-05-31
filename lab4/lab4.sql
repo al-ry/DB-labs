@@ -95,7 +95,8 @@ INSERT INTO booking VALUES(
 
 INSERT INTO room_in_booking (id_booking, id_room, checkin_date, checkout_date)  VALUES (
 	(SELECT MAX(booking.id_booking) FROM booking), 26, '2020-05-01','2020-05-12');
-COMMIT;
+
+ROLLBACK;
 
 
 --9. Добавить необходимые индексы для всех таблиц.
