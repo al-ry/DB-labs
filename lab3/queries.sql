@@ -22,7 +22,6 @@
 	--2. По условию
 	DELETE FROM recipient WHERE name = 'Ivan';
 
-
 --3. UPDATE
 	--1. Всех записей
 	UPDATE recipient SET phone_number = '88005553535';
@@ -69,7 +68,7 @@
 
 -- 8. SELECT GROUP BY + HAVING
 	--  1. Написать 3 разных запроса с использованием GROUP BY + HAVING
-	SELECT arrival_date FROM letter GROUP BY arrival_date HAVING YEAR(arrival_date)  > 2016;
+	SELECT arrival_date FROM letter GROUP BY arrival_date HAVING YEAR(arrival_date) > 2016;
 
 	SELECT title, cost FROM notification GROUP BY title, cost HAVING sum(cost) > 200;
 
