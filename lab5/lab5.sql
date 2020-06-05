@@ -32,14 +32,16 @@ WHERE medicine.name = N'Кордерон' AND company.name = N'Аргус';
 
 --3.Дать список лекарств компании “Фарма”, на которые не были сделаны заказ до 25 января
 
-SELECT DISTINCT medicine.id_medicine, medicine.name
+SELECT medicine.id_medicine, medicine.name
 FROM medicine
-INNER JOIN production ON medicine.id_medicine = production.id_medicine
-INNER JOIN company ON company.id_company = production.id_company
-INNER JOIN [order] ON production.id_production = [order].id_production
-WHERE (company.name = N'Фарма') AND
-(production.id_production NOT IN (SELECT id_production FROM [order] where [order].date <= '2019-01-25'))
-ORDER BY medicine.id_medicine;
+WHERE medicine.name NOT IN 
+(
+	SELECT medicine.name FROM production
+	INNER JOIN [order] ON [order].id_production = production.id_production AND [order].date <= '2019-01-25'
+	INNER JOIN medicine ON medicine.id_medicine = production.id_medicine
+	INNER JOIN company ON company.id_company = production.id_company AND company.name = N'Фарма'
+) ORDER BY medicine.id_medicine;
+
 
 --4.Дать минимальный и максимальный баллы лекарств каждой фирмы, которая оформила не менее 120 заказов.
 SELECT company.name, MAX(rating) AS max_rating, MIN(rating) AS min_rating FROM production
@@ -100,7 +102,7 @@ CREATE NONCLUSTERED INDEX [IX_order_id_production] ON [order]
 	id_production ASC
 )
 
-CREATE NONCLUSTERED INDEX [IX_order_id_date] ON [order]
+CREATE NONCLUSTERED INDEX [IX_order_date] ON [order]
 (
 	date ASC
 )
@@ -108,11 +110,6 @@ CREATE NONCLUSTERED INDEX [IX_order_id_date] ON [order]
 CREATE NONCLUSTERED INDEX [IX_dealer_id_company] ON dealer
 (
 	id_company ASC
-)
-
-CREATE NONCLUSTERED INDEX [IX_pharmacy_name] ON pharmacy
-(
-	name ASC
 )
 
 CREATE NONCLUSTERED INDEX [IX_medicine_name] ON medicine
@@ -123,9 +120,4 @@ CREATE NONCLUSTERED INDEX [IX_medicine_name] ON medicine
 CREATE NONCLUSTERED INDEX [IX_company_name] ON company
 (
 	name ASC
-)
-
-CREATE UNIQUE NONCLUSTERED INDEX [IU_dealer_phone] ON dealer
-(
-	phone ASC
 )
