@@ -1,8 +1,9 @@
-USE notificationsV2
+USE notifications
 
 CREATE TABLE recipient
 (
 	id_recipient INT PRIMARY KEY IDENTITY,
+	id_address INT REFERENCES address(id_address),
 	name  nvarchar(50) NOT NULL,
 	surname nvarchar(50) NOT NULL,
 	phone_number nvarchar(12) NOT NULL,
@@ -19,33 +20,46 @@ CREATE TABLE post
 	adress_name nvarchar(50) NOT NULL
 );
 
-CREATE TABLE adress
+CREATE TABLE address
 (
-	id_adress INT PRIMARY KEY IDENTITY,
+	id_address INT PRIMARY KEY IDENTITY,
 	name nvarchar(50),
 	id_post INT REFERENCES post(id_post),
-	id_recipient INT REFERENCES recipient(id_recipient)
 );
 
-ALTER TABLE adress
+ALTER TABLE address
 ALTER COLUMN name nvarchar(50) NOT NULL;
 
 CREATE TABLE notification
 (
 	id_notification INT PRIMARY KEY IDENTITY,
+	id_letter INT REFERENCES letter(id_letter),
 	title nvarchar (50) NOT NULL,
 	action nvarchar (50) NOT NULL,
 	content text NOT NULL,
 	cost money
 );
 
+ALTER TABLE notification DROP COLUMN title;
+ALTER TABLE notification DROP COLUMN action;
+ALTER TABLE notification DROP COLUMN content;
+ALTER TABLE notification DROP COLUMN cost;
+ALTER TABLE notification
+ADD description TEXT NOT NULL;
 
 CREATE TABLE letter
 (
 	id_letter INT PRIMARY KEY IDENTITY,
 	arrival_date datetime NOT NULL,
 	return_date datetime NOT NULL,
-	id_notification INT REFERENCES notification(id_notification),
-	id_adress INT REFERENCES adress(id_adress)
+	id_address INT REFERENCES address(id_address)
 );
+ALTER TABLE letter
+ALTER COLUMN declared_value money NULL;
+
+ALTER TABLE letter
+ADD cost money NULL;
+
+ALTER TABLE letter DROP COLUMN content;
+
 
