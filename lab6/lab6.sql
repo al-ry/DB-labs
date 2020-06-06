@@ -139,18 +139,3 @@ CREATE NONCLUSTERED INDEX [IX_group_name] ON [group]
 (
 	name ASC
 )
-
-CREATE UNIQUE NONCLUSTERED INDEX [IU_teacher_phone] ON [teacher]
-(
-	phone ASC
-)
-
-CREATE UNIQUE NONCLUSTERED INDEX [IU_student_phone] ON [student]
-(
-	phone ASC
-)
-
-CREATE NONCLUSTERED INDEX [IX_student_id_group] ON [student]
-(
-	phone ASC
-)
