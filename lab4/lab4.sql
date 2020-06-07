@@ -43,6 +43,7 @@ ON room.id_room = booked_rooms.id_room
 WHERE booked_rooms.id_room IS NULL
 
 -- 4. Дать количество проживающих в гостинице "Космос" на 23 марта по каждой категории номеров
+--Теперь группирует по id, а не по name
 SELECT COUNT(room_category.id_room_category) AS is_living_amount, room_category.id_room_category FROM room_category
 INNER JOIN room ON room.id_room_category = room_category.id_room_category
 INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
@@ -64,7 +65,7 @@ INNER JOIN (SELECT booked_in_april.id_room, MAX(booked_in_april.checkout_date) A
 	FROM (--извлекаю комнаты забронированные в апреле
 			SELECT * FROM room_in_booking WHERE checkout_date >= '2019-04-01' AND checkout_date < '2019-05-01'
 			) AS booked_in_april
-	--извлекаю макс по дату по каждой комнате
+	--извлекаю макс по дату по каждой комнате				получу проживавших в этих комнатах
 	GROUP BY booked_in_april.id_room) AS room_in_booking2 ON room_in_booking2.id_room = room_in_booking.id_room
 WHERE room_in_booking2.last_checkout = room_in_booking.checkout_date
 
@@ -157,9 +158,4 @@ CREATE NONCLUSTERED INDEX [IX_room_in_booking_checkout_date] ON room_in_booking
 	checkout_date ASC
 )
 
-CREATE NONCLUSTERED INDEX [IX_room_in_booking_id_room] ON room_in_booking
-(
-	id_room ASC
-)
-INCLUDE([checkout_date])
 
